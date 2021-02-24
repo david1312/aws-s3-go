@@ -131,12 +131,12 @@ func deleteObject(filename string, bucketName string) (resp *s3.DeleteObjectOutp
 }
 
 func main() {
-	folder := "upload_file"
+	// folder := "upload_file"
 	//  print list our bucket
-	// fmt.Println(listBuckets())
+	fmt.Println(listBuckets())
 
 	// print list object  in specific bucket
-	// fmt.Println(listObjects(BUCKET_NAME))
+	fmt.Println(listObjects(BUCKET_NAME))
 
 	//createbucket
 	// fmt.Println(createBucket(BUCKET_NAME2))
@@ -151,17 +151,17 @@ func main() {
 	// deleteObject("logo.png", BUCKET_NAME)
 
 	//try upload all file in one folder
-	files, _ := ioutil.ReadDir(folder)
-	fmt.Println(files)
-	for _, file := range files {
-		if file.IsDir() {
-			continue
-		} else {
-			uploadObject(folder+"/"+file.Name(), BUCKET_NAME)
-		}
-	}
+	// files, _ := ioutil.ReadDir(folder)
+	// fmt.Println(files)
+	// for _, file := range files {
+	// 	if file.IsDir() {
+	// 		continue
+	// 	} else {
+	// 		uploadObject(folder+"/"+file.Name(), BUCKET_NAME)
+	// 	}
+	// }
 
-	fmt.Println(listObjects(BUCKET_NAME))
+	// fmt.Println(listObjects(BUCKET_NAME))
 
 	// for _, object := range listObjects(BUCKET_NAME).Contents {
 	// 	downloadObject(*object.Key, BUCKET_NAME)
@@ -169,4 +169,5 @@ func main() {
 	// }
 
 	// fmt.Println(listObjects(BUCKET_NAME))
+
 }
