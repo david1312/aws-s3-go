@@ -1,3 +1,3 @@
 // run this code
 
-go run main.go <bucketname>
+go run main.go 
