@@ -1,0 +1,102 @@
+Task Nyala Basic:
+Git Branch : feature/nyala_basic
+
+- enhancement halaman product list :
+     - tambah coloum di table products = image, background_image
+     - tambah object image dan background image di response graphQL query get product
+
+- dihalaman "Halo !, Senang bertemu denganmu" (graphQL function apply), pindahin input KTP yang tadi nya ada di halaman
+  upload KTP berikut validasi check aml dan IsCustomerExists (ada kendala karena perlu nama ibu sedangkan di halaman ini belum ada)
+
+- enhancement halaman "Syarat & Ketentuan" :
+	 - tambah coloum di table application_products = summary_title
+	 - buat graphQL query baru buat get data "Ringkasan Informasi Product & Layanan", data product nya apa aja, ambil dari table application_products by uuid, jadi function GQL nya gak perlu
+	   paramater, uid ambil token claims, expected response :
+	   Response :
+		[
+		    {
+		        "product_id": 1,
+		        "product_code": "tbsa1244",
+		        "title": "bla",
+		        "content": "bla",
+		        "statement": "bla"
+		    },
+		    {
+		        "product_id": 2,
+		        "product_code": "tbsa11111",
+		        "title": "bla",
+		        "content": "bla",
+		        "statement": "bla"
+		    }
+		]
+	 - buat graphQL mutation baru untuk save data "Ringkasan Informasi Product & Layanan", simpan title ke table application_products coloum summary_title, query by applicant_uid, dan 
+	   product_id, expected request nya :
+	   Request :
+		[
+		    {
+		        "product_id": 1,
+		        "title": "bla"
+		    },
+		    {
+		        "product_id": 2,
+		        "title": "bla"
+		    }
+		]
+	 - di halaman syarat dan ketentuan tambahain logic untuk nampilin T&C sesuai product yang user pilih, data product nya ambil dari table application_products
+- lanjutin fitur multi bahasa i18n
+
+
+
+
+
+
+Task Taka:
+Git Branch : feature/taka
+
+- tambah table baru buat simpan suku bunga taka, nama table "taka_rates"
+- buat scheduller yang running perhari buat ambil suku bunga taka terbaru dari internal api lalu simpen ke table taka_rates
+- tambah coloum baru di table application_products = nominal, dan tenor
+- modif graphQL query purposes, tampilin purpose sesuai kebutuhan taka, mungkin perlu ada flagging di table opening_purposes
+- buat endpoint graphQL mutation baru buat set data purpose
+- buat endpoint calculate taka, param product code, nominal, tenor. bunga ambil di table taka_rates, calculate data return result calculate and suku bunga
+	Request :
+	{
+	    "product_id": 1,
+	    "nominal": 1020000000,
+	    "tenor": 64
+	}
+
+	Response :
+	{
+	    "installment": 2000000,
+	    "rate": 0.4,
+	    "target": 70000000,  // jika bukan taka hadiah mungkin ini kosong
+	    "penalty": 2000000   // jika bukan taka hadiah mungkin ini kosong
+	}
+- modif endpoint graphQL apply, tambah validasi apakah customer ETB dan mempunyai CASA aktif (rekening saving),
+  jika ETB gak ada casa aktif :
+      - ambil data lengkap nasabah ke internal API, simpan data yang di butuhin WOB ke table application
+      - return error code supaya frontend tau harus redirect ke halaman apa
+      - save purpose
+  jika ETB dan ada casa aktif :
+      - hit internal API untuk get data casa aktif
+      - buat graphQL mutation baru untuk save nomer rekening casa aktif ke table application
+- modif endpoint graphQL query Me, tambahin data product yang di pilih sama user
+
+
+- modif worker :
+	- cek jika nomer CIF nya udah ada di table application berati customer ETB, running task sesuai kebutuhan
+	- cek jika nomer rekening belum ada berati jalanin task create product tanda 360
+		- tambahin product tanda 360 ke applications_products
+
+
+
+
+
+
+
+
+
+
+
+
